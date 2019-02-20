@@ -58,6 +58,7 @@ import org.hisp.dhis.trackedentityattributevalue.TrackedEntityAttributeValueServ
 import org.hisp.dhis.user.CurrentUserService;
 import org.hisp.dhis.user.User;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
@@ -76,6 +77,7 @@ import static org.hisp.dhis.trackedentity.TrackedEntityInstanceQueryParams.*;
 /**
  * @author Abyot Asalefew Gizaw
  */
+@Service( "org.hisp.dhis.trackedentity.TrackedEntityInstanceService" )
 public class DefaultTrackedEntityInstanceService
     implements TrackedEntityInstanceService
 {

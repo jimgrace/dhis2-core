@@ -32,6 +32,7 @@ import java.util.List;
 
 import org.hisp.dhis.program.ProgramInstance;
 import org.hisp.dhis.program.ProgramStageInstance;
+import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 /**
@@ -39,6 +40,7 @@ import org.springframework.transaction.annotation.Transactional;
  *
  */
 @Transactional(readOnly = true)
+@Service( "org.hisp.dhis.program.EventSyncService" )
 public class DefaultEventSyncService implements EventSyncService
 {
     // -------------------------------------------------------------------------
@@ -47,11 +49,11 @@ public class DefaultEventSyncService implements EventSyncService
 
     private EventSyncStore eventSyncStore;
 
-    public void setEventSyncStore( EventSyncStore eventSyncStore )
+    public DefaultEventSyncService( EventSyncStore eventSyncStore )
     {
         this.eventSyncStore = eventSyncStore;
     }
-    
+
     // -------------------------------------------------------------------------
     // Implementation methods
     // -------------------------------------------------------------------------

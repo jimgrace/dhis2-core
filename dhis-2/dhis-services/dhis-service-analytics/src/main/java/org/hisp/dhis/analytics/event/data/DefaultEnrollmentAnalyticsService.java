@@ -28,6 +28,7 @@ package org.hisp.dhis.analytics.event.data;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+import static com.google.common.base.Preconditions.checkNotNull;
 import static org.hisp.dhis.analytics.AnalyticsMetaDataKey.DIMENSIONS;
 import static org.hisp.dhis.analytics.AnalyticsMetaDataKey.ITEMS;
 import static org.hisp.dhis.analytics.AnalyticsMetaDataKey.ORG_UNIT_HIERARCHY;
@@ -122,10 +123,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import com.google.common.collect.Lists;
 
 import org.springframework.core.env.Environment;
+import org.springframework.stereotype.Service;
 
 /**
  * @author Markus Bekken
  */
+@Service( "org.hisp.dhis.analytics.event.EnrollmentAnalyticsService" )
 public class DefaultEnrollmentAnalyticsService
     implements EnrollmentAnalyticsService
 {
@@ -150,26 +153,28 @@ public class DefaultEnrollmentAnalyticsService
 
     private static final int MAX_CACHE_ENTRIES = 20000;
     private static final String CACHE_REGION = "enrollmentAnalyticsQueryResponse";
+    
+    private final EnrollmentAnalyticsManager enrollmentAnalyticsManager;
 
-    @Autowired
-    private DataElementService dataElementService;
+    private final AnalyticsSecurityManager securityManager;
 
-    @Autowired
-    private TrackedEntityAttributeService trackedEntityAttributeService;
+    private final EventQueryPlanner queryPlanner;
 
-    @Autowired
-    private EnrollmentAnalyticsManager enrollmentAnalyticsManager;
+    private final EventQueryValidator queryValidator;
 
+    public DefaultEnrollmentAnalyticsService( EnrollmentAnalyticsManager enrollmentAnalyticsManager,
+        AnalyticsSecurityManager securityManager, EventQueryPlanner queryPlanner, EventQueryValidator queryValidator )
+    {
+        checkNotNull( enrollmentAnalyticsManager );
+        checkNotNull( securityManager );
+        checkNotNull( queryPlanner );
+        checkNotNull( queryValidator );
 
-    @Autowired
-    private AnalyticsSecurityManager securityManager;
-
-    @Autowired
-    private EventQueryPlanner queryPlanner;
-
-    @Autowired
-    private EventQueryValidator queryValidator;
-
+        this.enrollmentAnalyticsManager = enrollmentAnalyticsManager;
+        this.securityManager = securityManager;
+        this.queryPlanner = queryPlanner;
+        this.queryValidator = queryValidator;
+    }
 
     // -------------------------------------------------------------------------
     // EventAnalyticsService implementation

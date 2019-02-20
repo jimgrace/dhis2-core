@@ -38,8 +38,8 @@ import org.hisp.dhis.scheduling.Job;
 import org.hisp.dhis.scheduling.JobConfiguration;
 import org.hisp.dhis.scheduling.JobConfigurationService;
 import org.hisp.dhis.scheduling.SchedulingManager;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.support.CronSequenceGenerator;
+import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -47,6 +47,7 @@ import java.util.Objects;
 import java.util.Set;
 import java.util.stream.Collectors;
 
+import static com.google.common.base.Preconditions.checkNotNull;
 import static org.hisp.dhis.scheduling.DefaultSchedulingManager.CONTINOUS_CRON;
 import static org.hisp.dhis.scheduling.DefaultSchedulingManager.HOUR_CRON;
 import static org.hisp.dhis.scheduling.JobStatus.DISABLED;
@@ -54,18 +55,23 @@ import static org.hisp.dhis.scheduling.JobStatus.DISABLED;
 /**
  * @author Henning Håkonsen
  */
+@Component
 public class JobConfigurationObjectBundleHook
     extends AbstractObjectBundleHook
 {
     private static final Log log = LogFactory.getLog( JobConfigurationObjectBundleHook.class );
 
-    @Autowired
-    private JobConfigurationService jobConfigurationService;
+    private final JobConfigurationService jobConfigurationService;
 
-    private SchedulingManager schedulingManager;
+    private final SchedulingManager schedulingManager;
 
-    public void setSchedulingManager( SchedulingManager schedulingManager )
+    public JobConfigurationObjectBundleHook( JobConfigurationService jobConfigurationService,
+        SchedulingManager schedulingManager )
     {
+        checkNotNull( jobConfigurationService );
+        checkNotNull( schedulingManager );
+
+        this.jobConfigurationService = jobConfigurationService;
         this.schedulingManager = schedulingManager;
     }
 
@@ -115,7 +121,7 @@ public class JobConfigurationObjectBundleHook
         // Validate parameters
         if ( tempJobConfiguration.getJobParameters() != null )
         {
-            tempJobConfiguration.getJobParameters().validate().ifPresent( errorReport -> errorReports.add( errorReport ) );
+            tempJobConfiguration.getJobParameters().validate().ifPresent(errorReports::add);
         }
 
         validateJob( errorReports, tempJobConfiguration, persistedJobConfiguration );
@@ -249,23 +255,18 @@ public class JobConfigurationObjectBundleHook
     @Override
     public <T extends IdentifiableObject> void postCreate( T persistedObject, ObjectBundle bundle )
     {
-        if ( !JobConfiguration.class.isInstance( persistedObject ) )
-        {
-            return;
-        }
-
-        JobConfiguration jobConfiguration = (JobConfiguration) persistedObject;
-
-        if ( jobConfiguration.getJobStatus() != DISABLED )
-        {
-            schedulingManager.scheduleJob( jobConfiguration );
-        }
+        postOp( persistedObject );
     }
 
     @Override
     public <T extends IdentifiableObject> void postUpdate( T persistedObject, ObjectBundle bundle )
     {
-        if ( !JobConfiguration.class.isInstance( persistedObject ) )
+        postOp( persistedObject );
+    }
+
+    private <T extends IdentifiableObject> void postOp( T persistedObject )
+    {
+        if ( !(persistedObject instanceof JobConfiguration))
         {
             return;
         }

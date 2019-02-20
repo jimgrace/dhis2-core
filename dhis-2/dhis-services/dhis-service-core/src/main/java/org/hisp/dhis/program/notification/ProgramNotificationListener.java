@@ -33,21 +33,28 @@ import org.hisp.dhis.program.notification.event.ProgramRuleEnrollmentEvent;
 import org.hisp.dhis.program.notification.event.ProgramRuleStageEvent;
 import org.hisp.dhis.program.notification.event.ProgramStageCompletionNotificationEvent;
 import org.hisp.dhis.program.notification.event.ProgramEnrollmentNotificationEvent;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.event.EventListener;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.stereotype.Component;
+
+import static com.google.common.base.Preconditions.checkNotNull;
 
 /**
  * Created by zubair@dhis2.org on 18.01.18.
  */
-
 @Async
 @Transactional // TODO do we need the @Transactional annotation here?
+@Component( "org.hisp.dhis.program.notification.ProgramNotificationListener" )
 public class ProgramNotificationListener
 {
-    @Autowired
-    private ProgramNotificationService programNotificationService;
+    private final ProgramNotificationService programNotificationService;
+
+    public ProgramNotificationListener( ProgramNotificationService programNotificationService )
+    {
+        checkNotNull( programNotificationService );
+        this.programNotificationService = programNotificationService;
+    }
 
     @EventListener
     public void onEnrollment( ProgramEnrollmentNotificationEvent event )

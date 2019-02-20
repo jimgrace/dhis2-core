@@ -48,6 +48,7 @@ import org.hisp.dhis.dataelement.DataElement;
 import org.hisp.dhis.message.MessageConversationParams;
 import org.hisp.dhis.message.MessageService;
 import org.hisp.dhis.notification.NotificationMessage;
+import org.hisp.dhis.notification.NotificationMessageRenderer;
 import org.hisp.dhis.notification.ProgramNotificationMessageRenderer;
 import org.hisp.dhis.notification.ProgramStageNotificationMessageRenderer;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
@@ -106,7 +107,18 @@ public class ProgramNotificationServiceTest extends DhisConvenienceTest
     @Mock
     private IdentifiableObjectManager manager;
 
-    @InjectMocks
+    @Mock
+    private ProgramInstanceStore programInstanceStore;
+
+    @Mock
+    private ProgramStageInstanceStore programStageInstanceStore;
+
+    @Mock
+    private NotificationMessageRenderer<ProgramInstance> programNotificationRenderer;
+
+    @Mock
+    private NotificationMessageRenderer<ProgramStageInstance> programStageNotificationRenderer;
+
     private DefaultProgramNotificationService programNotificationService;
 
     private Set<ProgramInstance> programInstances = new HashSet<>();
@@ -154,8 +166,9 @@ public class ProgramNotificationServiceTest extends DhisConvenienceTest
     @SuppressWarnings("unchecked")
     public void initTest()
     {
-        programNotificationService.setProgramStageNotificationRenderer( programStageNotificationMessageRenderer );
-        programNotificationService.setProgramNotificationRenderer( programNotificationMessageRenderer );
+        programNotificationService = new DefaultProgramNotificationService( this.programMessageService,
+            this.messageService, this.programInstanceStore, this.programStageInstanceStore, this.manager,
+            this.programNotificationRenderer, this.programStageNotificationRenderer );
 
         setUpInstances();
 

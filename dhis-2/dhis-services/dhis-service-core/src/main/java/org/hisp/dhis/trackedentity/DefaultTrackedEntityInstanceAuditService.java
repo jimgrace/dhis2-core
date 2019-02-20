@@ -29,6 +29,7 @@ package org.hisp.dhis.trackedentity;
  */
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -38,6 +39,7 @@ import java.util.List;
  * @author Abyot Asalefew Gizaw abyota@gmail.com
  *
  */
+@Service( "org.hisp.dhis.trackedentity.TrackedEntityInstanceAuditService" )
 public class DefaultTrackedEntityInstanceAuditService
     implements TrackedEntityInstanceAuditService
 {
