@@ -45,13 +45,16 @@ import org.hisp.dhis.program.ProgramStageService;
 import org.hisp.dhis.security.acl.AclService;
 import org.hisp.dhis.user.CurrentUserService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import static com.google.common.base.Preconditions.checkNotNull;
 
 /**
  * @author Ameen Mohamed <ameen@dhis2.org>
  *
  */
-@Transactional
+@Service( "org.hisp.dhis.programstagefilter.ProgramStageInstanceFilterService" )
 public class DefaultProgramStageInstanceFilterService implements ProgramStageInstanceFilterService
 {
 
@@ -59,51 +62,34 @@ public class DefaultProgramStageInstanceFilterService implements ProgramStageIns
     // Dependencies
     // -------------------------------------------------------------------------
 
-    private ProgramStageInstanceFilterStore programStageInstanceFilterStore;
+    private final ProgramStageInstanceFilterStore programStageInstanceFilterStore;
 
-    private ProgramService programService;
+    private final ProgramService programService;
 
-    private ProgramStageService programStageService;
+    private final ProgramStageService programStageService;
 
-    private OrganisationUnitService organisationUnitService;
+    private final OrganisationUnitService organisationUnitService;
 
-    private AclService aclService;
+    private final AclService aclService;
 
-    private CurrentUserService currentUserService;
+    private final CurrentUserService currentUserService;
 
-    @Autowired
-    public void setProgramStageInstanceFilterStore( ProgramStageInstanceFilterStore programStageInstanceFilterStore )
+    public DefaultProgramStageInstanceFilterService( ProgramStageInstanceFilterStore programStageInstanceFilterStore,
+        ProgramService programService, ProgramStageService programStageService,
+        OrganisationUnitService organisationUnitService, AclService aclService, CurrentUserService currentUserService )
     {
+        checkNotNull( programStageInstanceFilterStore );
+        checkNotNull( programService );
+        checkNotNull( programStageService );
+        checkNotNull( organisationUnitService );
+        checkNotNull( aclService );
+        checkNotNull( currentUserService );
+
         this.programStageInstanceFilterStore = programStageInstanceFilterStore;
-    }
-
-    @Autowired
-    public void setProgramService( ProgramService programService )
-    {
         this.programService = programService;
-    }
-
-    @Autowired
-    public void setProgramStageService( ProgramStageService programStageService )
-    {
         this.programStageService = programStageService;
-    }
-
-    @Autowired
-    public void setOrganisationUnitService( OrganisationUnitService organisationUnitService )
-    {
         this.organisationUnitService = organisationUnitService;
-    }
-
-    @Autowired
-    public void setAclService( AclService aclService )
-    {
         this.aclService = aclService;
-    }
-
-    @Autowired
-    public void setCurrentUserService( CurrentUserService currentUserService )
-    {
         this.currentUserService = currentUserService;
     }
 
@@ -112,6 +98,7 @@ public class DefaultProgramStageInstanceFilterService implements ProgramStageIns
     // -------------------------------------------------------------------------
 
     @Override
+    @Transactional
     public long add( ProgramStageInstanceFilter programStageInstanceFilter )
     {
         List<String> errors = validate( programStageInstanceFilter );
@@ -125,6 +112,7 @@ public class DefaultProgramStageInstanceFilterService implements ProgramStageIns
     }
 
     @Override
+    @Transactional
     public void delete( ProgramStageInstanceFilter programStageInstanceFilter )
     {
         if ( !aclService.canDelete( currentUserService.getCurrentUser(), programStageInstanceFilter ) )
@@ -136,6 +124,7 @@ public class DefaultProgramStageInstanceFilterService implements ProgramStageIns
     }
 
     @Override
+    @Transactional
     public void update( ProgramStageInstanceFilter programStageInstanceFilter )
     {
         if ( !aclService.canUpdate( currentUserService.getCurrentUser(), programStageInstanceFilter ) )
@@ -244,11 +233,9 @@ public class DefaultProgramStageInstanceFilterService implements ProgramStageIns
             psiFilters = programStageInstanceFilterStore.getAll();
         }
 
-        List<ProgramStageInstanceFilter> filteredEventFilters = psiFilters.stream()
+        return psiFilters.stream()
             .filter( psiFilter -> aclService.canRead( currentUserService.getCurrentUser(), psiFilter ) )
             .collect( Collectors.toList() );
-
-        return filteredEventFilters;
     }
 
 }

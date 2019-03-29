@@ -34,10 +34,12 @@ import org.hisp.dhis.common.hibernate.HibernateIdentifiableObjectStore;
 import org.hisp.dhis.deduplication.PotentialDuplicate;
 import org.hisp.dhis.deduplication.PotentialDuplicateQuery;
 import org.hisp.dhis.deduplication.PotentialDuplicateStore;
+import org.springframework.stereotype.Repository;
 
 import java.math.BigInteger;
 import java.util.List;
 
+@Repository( "org.hisp.dhis.deduplication.PotentialDuplicateStore" )
 public class HibernatePotentialDuplicateStore
     extends HibernateIdentifiableObjectStore<PotentialDuplicate>
     implements PotentialDuplicateStore
