@@ -34,9 +34,16 @@ import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
 /**
- * @author Luciano Fiandesio FIXME
+ * Signal that a class extending from {@see HibernateGenericStore} requires the property
+ * 'cacheable' to be set to true
+ *
+ * This annotation only has effects on classes extending from {@see HibernateGenericStore}
+ *
+ * @author Luciano Fiandesio
  */
 @Retention(RetentionPolicy.RUNTIME)
 @Target(ElementType.TYPE)
 public @interface RepoCacheable {
+
+    boolean enabled() default true;
 }

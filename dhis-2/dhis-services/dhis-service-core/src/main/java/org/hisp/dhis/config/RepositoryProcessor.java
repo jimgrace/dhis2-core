@@ -28,6 +28,8 @@
 
 package org.hisp.dhis.config;
 
+import org.hisp.dhis.cache.RepoCacheable;
+import org.hisp.dhis.hibernate.HibernateGenericStore;
 import org.springframework.beans.BeansException;
 import org.springframework.beans.factory.config.BeanPostProcessor;
 import org.springframework.stereotype.Component;
@@ -36,16 +38,31 @@ import org.springframework.stereotype.Component;
  * @author Luciano Fiandesio
  */
 @Component
-public class RepositoryPostProcessor implements BeanPostProcessor {
-
-
+public class RepositoryProcessor
+    implements
+    BeanPostProcessor
+{
     @Override
-    public Object postProcessBeforeInitialization(Object o, String s) throws BeansException {
-        return null;
+    public Object postProcessBeforeInitialization( Object bean, String beanName )
+        throws BeansException
+    {
+        return bean;
     }
 
     @Override
-    public Object postProcessAfterInitialization(Object o, String s) throws BeansException {
-        return null;
+    public Object postProcessAfterInitialization( Object bean, String beanName )
+        throws BeansException
+    {
+        if ( bean instanceof HibernateGenericStore && isCacheEnabled( bean ) )
+        {
+            ((HibernateGenericStore) bean).setCacheable( true );
+        }
+        return bean;
+    }
+
+    private boolean isCacheEnabled( Object bean )
+    {
+        return bean.getClass().isAnnotationPresent( RepoCacheable.class )
+            && bean.getClass().getAnnotation( RepoCacheable.class ).enabled();
     }
 }
