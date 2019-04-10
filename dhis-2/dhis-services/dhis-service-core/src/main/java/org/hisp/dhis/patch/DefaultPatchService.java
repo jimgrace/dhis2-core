@@ -67,6 +67,7 @@ import static com.google.common.base.Preconditions.checkNotNull;
 /**
  * @author Morten Olav Hansen <mortenoh@gmail.com>
  */
+@Service
 @Transactional // TODO not sure if this can be completely readonly
 public class DefaultPatchService implements PatchService
 {

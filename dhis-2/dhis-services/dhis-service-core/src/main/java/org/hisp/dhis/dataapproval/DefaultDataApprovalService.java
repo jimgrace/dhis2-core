@@ -512,7 +512,9 @@ public class DefaultDataApprovalService
         List<DataApprovalStatus> statuses = dataApprovalStore.getDataApprovalStatuses( workflow,
             periodService.reloadPeriod( period ), Lists.newArrayList( organisationUnit ),
             organisationUnit.getHierarchyLevel(), null,
-            attributeOptionCombo == null ? null : Sets.newHashSet( attributeOptionCombo ) );
+            attributeOptionCombo == null ? null : Sets.newHashSet( attributeOptionCombo ), 
+                dataApprovalLevelService.getUserDataApprovalLevelsOrLowestLevel( currentUserService.getCurrentUser(), workflow ), 
+                dataApprovalLevelService.getDataApprovalLevelMap());
 
         if ( statuses == null || statuses.isEmpty() )
         {
@@ -547,10 +549,11 @@ public class DefaultDataApprovalService
     public List<DataApprovalStatus> getUserDataApprovalsAndPermissions( DataApprovalWorkflow workflow,
         Period period, OrganisationUnit orgUnit, CategoryCombo attributeCombo )
     {
-        List<DataApprovalStatus> statusList = dataApprovalStore.getDataApprovalStatuses( workflow, period,
-            orgUnit == null ? null : Lists.newArrayList( orgUnit ),
-            orgUnit == null ? 0 : orgUnit.getHierarchyLevel(),
-            attributeCombo, null );
+        List<DataApprovalStatus> statusList = dataApprovalStore.getDataApprovalStatuses(
+            workflow, period, orgUnit == null ? null : Lists.newArrayList( orgUnit ),
+            orgUnit == null ? 0 : orgUnit.getHierarchyLevel(), attributeCombo, null, dataApprovalLevelService
+                .getUserDataApprovalLevelsOrLowestLevel( currentUserService.getCurrentUser(), workflow ),
+            dataApprovalLevelService.getDataApprovalLevelMap() );
 
         DataApprovalPermissionsEvaluator permissionsEvaluator = makePermissionsEvaluator();
 
@@ -667,7 +670,10 @@ public class DefaultDataApprovalService
             DataApproval da = dataApprovals.get( 0 );
 
             List<DataApprovalStatus> statuses = dataApprovalStore.getDataApprovalStatuses( da.getWorkflow(),
-                da.getPeriod(), orgUnits, da.getOrganisationUnit().getHierarchyLevel(), null, getCategoryOptionCombos( dataApprovals ) );
+                da.getPeriod(), orgUnits, da.getOrganisationUnit().getHierarchyLevel(), null,
+                getCategoryOptionCombos( dataApprovals ), dataApprovalLevelService
+                    .getUserDataApprovalLevelsOrLowestLevel( currentUserService.getCurrentUser(), da.getWorkflow() ),
+                dataApprovalLevelService.getDataApprovalLevelMap() );
 
             for ( DataApprovalStatus status : statuses )
             {

@@ -111,8 +111,6 @@ public class HibernateDataApprovalStore
 
     private final CategoryService categoryService;
 
-    private final DataApprovalLevelService dataApprovalLevelService;
-
     private final SystemSettingManager systemSettingManager;
 
     private final StatementBuilder statementBuilder;
@@ -122,7 +120,7 @@ public class HibernateDataApprovalStore
     public HibernateDataApprovalStore( SessionFactory sessionFactory, JdbcTemplate jdbcTemplate,
         CacheProvider cacheProvider, PeriodService periodService,
         CurrentUserService currentUserService, CategoryService categoryService,
-        DataApprovalLevelService dataApprovalLevelService, SystemSettingManager systemSettingManager,
+        SystemSettingManager systemSettingManager,
         StatementBuilder statementBuilder, Environment env )
     {
         super( sessionFactory, jdbcTemplate, DataApproval.class );
@@ -131,7 +129,6 @@ public class HibernateDataApprovalStore
         checkNotNull( periodService );
         checkNotNull( currentUserService );
         checkNotNull( categoryService );
-        checkNotNull( dataApprovalLevelService );
         checkNotNull( systemSettingManager );
         checkNotNull( statementBuilder );
         checkNotNull( env );
@@ -140,7 +137,6 @@ public class HibernateDataApprovalStore
         this.periodService = periodService;
         this.currentUserService = currentUserService;
         this.categoryService = categoryService;
-        this.dataApprovalLevelService = dataApprovalLevelService;
         this.systemSettingManager = systemSettingManager;
         this.statementBuilder = statementBuilder;
         this.env = env;
@@ -275,7 +271,8 @@ public class HibernateDataApprovalStore
     public List<DataApprovalStatus> getDataApprovalStatuses( DataApprovalWorkflow workflow,
         Period period, Collection<OrganisationUnit> orgUnits, int orgUnitLevel,
         CategoryCombo attributeCombo,
-        Set<CategoryOptionCombo> attributeOptionCombos )
+        Set<CategoryOptionCombo> attributeOptionCombos, List<DataApprovalLevel> userApprovalLevels,
+                                                             Map<Integer, DataApprovalLevel> levelMap )
     {
         // ---------------------------------------------------------------------
         // Get validation criteria
@@ -284,8 +281,6 @@ public class HibernateDataApprovalStore
         final User user = currentUserService.getCurrentUser();
 
         List<DataApprovalLevel> approvalLevels = workflow.getSortedLevels();
-
-        List<DataApprovalLevel> userApprovalLevels = dataApprovalLevelService.getUserDataApprovalLevelsOrLowestLevel( user, workflow );
 
         Set<OrganisationUnit> userOrgUnits = user.getDataViewOrganisationUnitsWithFallback();
 
@@ -536,8 +531,6 @@ public class HibernateDataApprovalStore
         // ---------------------------------------------------------------------
 
         SqlRowSet rowSet = jdbcTemplate.queryForRowSet( sql );
-
-        Map<Integer, DataApprovalLevel> levelMap = dataApprovalLevelService.getDataApprovalLevelMap();
 
         List<DataApprovalStatus> statusList = new ArrayList<>();
 

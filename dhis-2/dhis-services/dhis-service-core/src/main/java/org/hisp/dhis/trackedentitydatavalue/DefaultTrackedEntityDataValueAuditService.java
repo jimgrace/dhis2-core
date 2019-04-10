@@ -40,7 +40,7 @@ import java.util.List;
 /**
  * @author Morten Olav Hansen <mortenoh@gmail.com>
  */
-@Transactional
+@Service("org.hisp.dhis.trackedentitydatavalue.TrackedEntityDataValueAuditService")
 public class DefaultTrackedEntityDataValueAuditService
     implements TrackedEntityDataValueAuditService
 {
