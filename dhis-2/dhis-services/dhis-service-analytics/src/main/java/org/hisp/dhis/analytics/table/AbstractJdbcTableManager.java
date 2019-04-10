@@ -127,7 +127,6 @@ public abstract class AbstractJdbcTableManager
         checkNotNull( statementBuilder );
         checkNotNull( partitionManager );
         checkNotNull( databaseInfo );
-        checkNotNull( databaseInfo );
 
         this.idObjectManager = idObjectManager;
         this.organisationUnitService = organisationUnitService;

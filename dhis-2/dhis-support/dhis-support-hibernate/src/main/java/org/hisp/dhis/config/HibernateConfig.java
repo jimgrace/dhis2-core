@@ -183,17 +183,6 @@ public class HibernateConfig
     {
         JdbcTemplate jdbcTemplate = new JdbcTemplate( dataSource() );
         jdbcTemplate.setFetchSize( 1000 );
-        jdbcTemplate.setQueryTimeout( 600 );
-        return jdbcTemplate;
-    }
-
-    @Bean( "slowQueryJdbcTemplate" )
-    public JdbcTemplate slowQueryJdbcTemplate()
-            throws PropertyVetoException
-    {
-        JdbcTemplate jdbcTemplate = new JdbcTemplate( dataSource() );
-        jdbcTemplate.setFetchSize( 1000 );
-        jdbcTemplate.setQueryTimeout( 21600 );
         return jdbcTemplate;
     }
 
@@ -201,9 +190,8 @@ public class HibernateConfig
     public JdbcTemplate readOnlyJdbcTemplate()
             throws PropertyVetoException
     {
-        JdbcTemplate jdbcTemplate = new JdbcTemplate( dataSource() );
+        JdbcTemplate jdbcTemplate = new JdbcTemplate( readOnlyDataSource() );
         jdbcTemplate.setFetchSize( 1000 );
-        jdbcTemplate.setQueryTimeout( 600 );
         return jdbcTemplate;
     }
 
@@ -211,5 +199,4 @@ public class HibernateConfig
     {
         return hibernateConfigurationProvider().getConfiguration().getProperty( key );
     }
-
 }
