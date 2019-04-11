@@ -114,7 +114,7 @@ public abstract class AbstractJdbcTableManager
         SystemSettingManager systemSettingManager, DataApprovalLevelService dataApprovalLevelService,
         ResourceTableService resourceTableService, AnalyticsTableHookService tableHookService,
         StatementBuilder statementBuilder, PartitionManager partitionManager, DatabaseInfo databaseInfo,
-                                     @Qualifier("slowQueryJdbcTemplate")JdbcTemplate jdbcTemplate )
+        JdbcTemplate jdbcTemplate )
     {
 
         checkNotNull( idObjectManager );
