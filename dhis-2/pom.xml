@@ -119,14 +119,14 @@
     <hibernate.version>5.6.15.Final</hibernate.version>
     <ehcache3.version>3.10.8</ehcache3.version>
     <jaxb-runtime.version>4.0.5</jaxb-runtime.version>
-    <hypersistence-utils.version>3.8.3</hypersistence-utils.version>
+    <hypersistence-utils.version>3.9.0</hypersistence-utils.version>
     <!-- Data sources,db pools and db drivers -->
     <c3p0.version>0.10.1</c3p0.version>
     <HikariCP.version>6.1.0</HikariCP.version>
     <postgresql-driver.version>42.7.4</postgresql-driver.version>
     <postgis-jdbc.version>2.5.1</postgis-jdbc.version>
-    <datasource-proxy.version>1.10</datasource-proxy.version>
-    <mysql-connector-j.version>8.3.0</mysql-connector-j.version>
+    <datasource-proxy.version>1.10.1</datasource-proxy.version>
+    <mysql-connector-j.version>9.1.0</mysql-connector-j.version>
 
     <!-- Servlet -->
     <jakarta.servlet-api.version>6.1.0</jakarta.servlet-api.version>
@@ -168,7 +168,7 @@
 
     <!-- Apache Artemis -->
     <artemis-jakarta.version>2.38.0</artemis-jakarta.version>
-    <netty-all.version>4.1.114.Final</netty-all.version>
+    <netty-all.version>4.1.115.Final</netty-all.version>
     <classgraph.version>4.8.177</classgraph.version>
 
     <!-- SMS/SMPP -->
@@ -196,7 +196,6 @@
     <commons-math3.version>3.6.1</commons-math3.version>
     <commons-validator.version>1.9.0</commons-validator.version>
     <commons-io.version>2.17.0</commons-io.version>
-    <commons-codec.version>1.17.1</commons-codec.version>
     <commons-jexl.version>2.1.1</commons-jexl.version>
     <commons-email.version>1.6.0</commons-email.version>
     <httpcomponents-core.version>5.3.1</httpcomponents-core.version>
@@ -232,13 +231,13 @@
     <maven-exec-plugin.version>3.4.1</maven-exec-plugin.version>
     <maven-resources-plugin.version>3.3.1</maven-resources-plugin.version>
     <maven-failsafe-plugin.version>3.5.1</maven-failsafe-plugin.version>
-    <maven-javadoc-plugin.version>3.10.1</maven-javadoc-plugin.version>
+    <maven-javadoc-plugin.version>3.11.1</maven-javadoc-plugin.version>
     <maven-antrun-plugin.version>3.1.0</maven-antrun-plugin.version>
     <maven-enforcer-plugin.version>3.5.0</maven-enforcer-plugin.version>
     <maven-dependency-plugin.version>3.8.1</maven-dependency-plugin.version>
     <restrict-imports-enforcer.version>2.6.0</restrict-imports-enforcer.version>
     <versions-maven-plugin.version>2.17.1</versions-maven-plugin.version>
-    <dependency-check-maven.version>10.0.4</dependency-check-maven.version>
+    <dependency-check-maven.version>11.1.0</dependency-check-maven.version>
     <spotbugs-maven-plugin.version>4.8.6.5</spotbugs-maven-plugin.version>
     <spotless.version>2.43.0</spotless.version>
     <jacoco-maven-plugin.version>0.8.12</jacoco-maven-plugin.version>
@@ -247,7 +246,7 @@
     <jai-imageio.version>1.1.1</jai-imageio.version>
     <gson.version>2.11.0</gson.version>
     <semver4j.version>3.1.0</semver4j.version>
-    <opentelemetry.version>2.9.0</opentelemetry.version>
+    <opentelemetry.version>2.10.0</opentelemetry.version>
   </properties>
 
   <dependencyManagement>
@@ -920,11 +919,6 @@
         <groupId>commons-io</groupId>
         <artifactId>commons-io</artifactId>
         <version>${commons-io.version}</version>
-      </dependency>
-      <dependency>
-        <groupId>commons-codec</groupId>
-        <artifactId>commons-codec</artifactId>
-        <version>${commons-codec.version}</version>
       </dependency>
       <dependency>
         <groupId>org.apache.commons</groupId>
