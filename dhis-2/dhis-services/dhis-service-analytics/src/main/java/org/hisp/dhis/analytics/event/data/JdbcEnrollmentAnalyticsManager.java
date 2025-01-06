@@ -1202,18 +1202,4 @@ public class JdbcEnrollmentAnalyticsManager extends AbstractJdbcEventAnalyticsMa
     }
     return "";
   }
-
-//  protected String getSqlFilter(QueryFilter filter, QueryItem item) {
-//    String value = filter.getFilter();
-//
-//    if ("NV".equals(value)) {
-//      return "null";
-//    }
-//
-//    if (item.isNumeric()) {
-//      return value; // Don't quote numeric values
-//    } else {
-//      return sqlBuilder.singleQuote(value); // Quote text values
-//    }
-//  }
 }
