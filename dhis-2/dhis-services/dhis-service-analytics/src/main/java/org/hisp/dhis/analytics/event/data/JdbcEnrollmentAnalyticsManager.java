@@ -525,11 +525,7 @@ public class JdbcEnrollmentAnalyticsManager extends AbstractJdbcEventAnalyticsMa
         for (QueryFilter filter : item.getFilters()) {
           if (IN.equals(filter.getOperator())) {
             InQueryCteFilter inQueryCteFilter =
-                new InQueryCteFilter(
-                    "value",
-                    filter.getFilter(),
-                    item.isText(),
-                    cteDef);
+                new InQueryCteFilter("value", filter.getFilter(), item.isText(), cteDef);
             whereClause
                 .append(" and ")
                 .append(inQueryCteFilter.getSqlFilter(createOffset2(item.getProgramStageOffset())));
@@ -755,8 +751,7 @@ public class JdbcEnrollmentAnalyticsManager extends AbstractJdbcEventAnalyticsMa
     CteDefinition cteDef = cteContext.getDefinitionByItemUid(computeKey(item));
     int programStageOffset = createOffset2(item.getProgramStageOffset());
     String alias = getAlias(item).orElse(null);
-    columns.add(
-        "%s.value as %s".formatted(cteDef.getAlias(programStageOffset), quote(alias)));
+    columns.add("%s.value as %s".formatted(cteDef.getAlias(programStageOffset), quote(alias)));
     if (cteDef.isRowContext()) {
       // Add additional status and exists columns for row context
       columns.add(
@@ -1025,7 +1020,7 @@ public class JdbcEnrollmentAnalyticsManager extends AbstractJdbcEventAnalyticsMa
           String colName = quote(item.getItemName());
 
           String cteSql =
-                  """
+              """
                       select
                           enrollment,
                           %s as value,
@@ -1037,10 +1032,7 @@ public class JdbcEnrollmentAnalyticsManager extends AbstractJdbcEventAnalyticsMa
                       WHERE eventstatus != 'SCHEDULE'
                       AND ps = '%s'
                       """
-                          .formatted(
-                                  colName,
-                                  eventTableName,
-                                  item.getProgramStage().getUid());
+                  .formatted(colName, eventTableName, item.getProgramStage().getUid());
           cteContext.addCTE(
               item.getProgramStage(),
               item,
@@ -1136,13 +1128,13 @@ public class JdbcEnrollmentAnalyticsManager extends AbstractJdbcEventAnalyticsMa
       CteDefinition cteDef = cteContext.getDefinitionByItemUid(itemUid);
       if (cteDef.isProgramStage()) {
         List<Integer> offsets = cteDef.getOffsets();
-          for (Integer offset : offsets) {
-            String alias = cteDef.getAlias(offset);
-            String join = "%s %s ON %s.enrollment = ax.enrollment and %s.rn = %s"
-                    .formatted(cteDef.asCteName(itemUid), alias, alias, alias, offset + 1);
-            sql.append(LEFT_JOIN).append(join);
-          }
-
+        for (Integer offset : offsets) {
+          String alias = cteDef.getAlias(offset);
+          String join =
+              "%s %s ON %s.enrollment = ax.enrollment and %s.rn = %s"
+                  .formatted(cteDef.asCteName(itemUid), alias, alias, alias, offset + 1);
+          sql.append(LEFT_JOIN).append(join);
+        }
       }
       if (cteDef.isExists()) {
         sql.append(LEFT_JOIN)
