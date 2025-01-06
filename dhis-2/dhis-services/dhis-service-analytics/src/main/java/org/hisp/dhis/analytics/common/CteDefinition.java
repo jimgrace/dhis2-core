@@ -64,7 +64,7 @@ public class CteDefinition {
   }
 
   public String getAlias() {
-    if (offsets.size() <= 1) {
+    if (offsets.isEmpty()) {
       return alias;
     }
     return computeAlias(offsets.get(0));
