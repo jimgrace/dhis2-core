@@ -96,6 +96,7 @@ import org.hisp.dhis.analytics.common.CteDefinition;
 import org.hisp.dhis.analytics.common.ProgramIndicatorSubqueryBuilder;
 import org.hisp.dhis.analytics.event.EventQueryParams;
 import org.hisp.dhis.analytics.util.AnalyticsUtils;
+import org.hisp.dhis.analytics.util.sql.SqlConditionJoiner;
 import org.hisp.dhis.common.DimensionType;
 import org.hisp.dhis.common.DimensionalItemObject;
 import org.hisp.dhis.common.DimensionalObject;
@@ -946,7 +947,9 @@ public abstract class AbstractJdbcEventAnalyticsManager {
 
     sql += getFromClause(params);
 
-    sql += getWhereClause(params);
+    String whereClause = getWhereClause(params);
+    String filterWhereClause = getQueryItemsAndFiltersWhereClause(params, new SqlHelper());
+    sql += SqlConditionJoiner.joinSqlConditions(whereClause, filterWhereClause);
 
     String headerColumns = getHeaderColumns(headers, sql).stream().collect(joining(","));
     String orgColumns = getOrgUnitLevelColumns(params).stream().collect(joining(","));
