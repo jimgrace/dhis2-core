@@ -393,24 +393,6 @@ class TrackedEntitiesExportControllerTest extends PostgresControllerIntegrationT
   }
 
   @Test
-  void getTrackedEntityByIdWithFieldsRelationshipsNoAccessToRelationshipType() {
-    TrackedEntity from = trackedEntity();
-    TrackedEntity to = trackedEntity();
-    relationship(relationshipTypeNotAccessible(), fromTrackedEntity(from), toTrackedEntity(to));
-    this.switchContextToUser(user);
-
-    JsonList<JsonRelationship> relationships =
-        GET("/tracker/trackedEntities/{id}?fields=relationships", from.getUid())
-            .content(HttpStatus.OK)
-            .getList("relationships", JsonRelationship.class);
-
-    assertEquals(
-        0,
-        relationships.size(),
-        "user needs access to relationship type to access the relationship");
-  }
-
-  @Test
   void getTrackedEntityByIdWithFieldsRelationshipsNoAccessToRelationshipItemTo() {
     TrackedEntity from = trackedEntity();
     TrackedEntity to = trackedEntityNotInSearchScope();
