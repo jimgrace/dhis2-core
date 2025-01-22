@@ -29,5 +29,12 @@
       <one-to-many class="org.hisp.dhis.program.ProgramCategoryOptionMapping" />
     </set>
 
+    <set name="programIndicators" table="programindicator_categorymappings" inverse="true">
+      <cache usage="read-write" />
+      <key column="categorymappingid" foreign-key="fk_pi_categorymappings_categorymappingid" />
+      <many-to-many class="org.hisp.dhis.program.ProgramIndicator" column="programindicatorid"
+                    foreign-key="fk_pi_categorymappings_programindicatorid" />
+    </set>
+
   </class>
 </hibernate-mapping>

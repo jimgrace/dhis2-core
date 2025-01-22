@@ -27,8 +27,6 @@
  */
 package org.hisp.dhis.program;
 
-import java.util.List;
-
 /**
  * @author Jim Grace
  */
@@ -48,22 +46,29 @@ public interface ProgramCategoryMappingService {
   /**
    * Deletes a {@link ProgramCategoryMapping}.
    *
-   * @param programCategoryMapping the ProgramCategoryMapping to delete.
+   * @param programCategoryMapping the {@link ProgramCategoryMapping} to delete.
    */
   void deleteProgramCategoryMapping(ProgramCategoryMapping programCategoryMapping);
 
   /**
+   * Deletes a {@link ProgramCategoryOptionMapping}.
+   *
+   * @param optionMapping the {@link ProgramCategoryOptionMapping} to delete.
+   */
+  void deleteProgramCategoryOptionMapping(ProgramCategoryOptionMapping optionMapping);
+
+  /**
    * Updates an {@link ProgramCategoryMapping}.
    *
-   * @param programCategoryMapping the ProgramCategoryMapping to update.
+   * @param programCategoryMapping the {@link ProgramCategoryMapping} to update.
    */
   void updateProgramCategoryMapping(ProgramCategoryMapping programCategoryMapping);
 
   /**
    * Returns a {@link ProgramCategoryMapping}.
    *
-   * @param id the id of the ProgramCategoryMapping to return.
-   * @return the ProgramCategoryMapping with the given id
+   * @param id the id of the {@link ProgramCategoryMapping} to return.
+   * @return the {@link ProgramCategoryMapping} with the given id
    */
   ProgramCategoryMapping getProgramCategoryMapping(long id);
 
@@ -71,15 +76,7 @@ public interface ProgramCategoryMappingService {
    * Returns the {@link ProgramCategoryMapping} with the given UID.
    *
    * @param uid the UID.
-   * @return the ProgramCategoryMapping with the given UID, or null if no match.
+   * @return the {@link ProgramCategoryMapping} with the given UID, or null if no match.
    */
   ProgramCategoryMapping getProgramCategoryMapping(String uid);
-
-  /**
-   * Retrieve all ProgramCategoryMappings associated with the given {@link Program}.
-   *
-   * @param program the Program.
-   * @return a list og ProgramCategoryMappings.
-   */
-  List<ProgramCategoryMapping> getProgramCategoryMappingsByProgram(Program program);
 }

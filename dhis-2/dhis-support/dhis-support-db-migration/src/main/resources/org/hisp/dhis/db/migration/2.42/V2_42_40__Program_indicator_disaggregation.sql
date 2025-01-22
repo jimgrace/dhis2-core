@@ -25,7 +25,7 @@ CREATE TABLE IF NOT EXISTS program_categorymapping
 CREATE TABLE IF NOT EXISTS program_categoryoptionmapping
 (
     optionmappingid         bigint          NOT NULL,
-    categorymappingid       bigint          NOT NULL,
+    categorymappingid       bigint, -- Must allow NULL during metadata import preheat!
     categoryoptionid        bigint          NOT NULL,
     filter                  text            NOT NULL,
     CONSTRAINT program_categoryoptionmapping_pkey PRIMARY KEY (optionmappingid),
@@ -59,16 +59,13 @@ WHERE attributecomboid IS NULL;
 ALTER TABLE programindicator ALTER COLUMN categorycomboid SET NOT NULL;
 ALTER TABLE programindicator ALTER COLUMN attributecomboid SET NOT NULL;
 
-CREATE TABLE IF NOT EXISTS programindicator_categorymapping
+CREATE TABLE IF NOT EXISTS programindicator_categorymappings
 (
     programindicatorid      bigint          NOT NULL,
-    categoryid              bigint          NOT NULL,
     categorymappingid       bigint          NOT NULL,
-    CONSTRAINT programindicator_categorymapping_pkey PRIMARY KEY (programindicatorid, categoryid),
-    CONSTRAINT fk_pi_categorymapping_programindicatorid FOREIGN KEY (programindicatorid)
+    CONSTRAINT programindicator_categorymappings_pkey PRIMARY KEY (programindicatorid, categorymappingid),
+    CONSTRAINT fk_pi_categorymappings_programindicatorid FOREIGN KEY (programindicatorid)
         REFERENCES programindicator(programindicatorid),
-    CONSTRAINT fk_pi_categorymapping_categoryid FOREIGN KEY (categoryid)
-        REFERENCES category(categoryid),
-    CONSTRAINT fk_pi_categorymapping_categorymappingid FOREIGN KEY (categorymappingid)
+    CONSTRAINT fk_pi_categorymappings_categorymappingid FOREIGN KEY (categorymappingid)
         REFERENCES program_categorymapping(categorymappingid)
 );

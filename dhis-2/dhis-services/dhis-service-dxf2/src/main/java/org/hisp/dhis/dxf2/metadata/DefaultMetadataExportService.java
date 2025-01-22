@@ -83,6 +83,7 @@ import org.hisp.dhis.option.Option;
 import org.hisp.dhis.option.OptionGroup;
 import org.hisp.dhis.option.OptionSet;
 import org.hisp.dhis.program.Program;
+import org.hisp.dhis.program.ProgramCategoryMapping;
 import org.hisp.dhis.program.ProgramIndicator;
 import org.hisp.dhis.program.ProgramSection;
 import org.hisp.dhis.program.ProgramStage;
@@ -800,6 +801,10 @@ public class DefaultMetadataExportService implements MetadataExportService {
         .getProgramIndicators()
         .forEach(programIndicator -> handleProgramIndicator(metadata, programIndicator));
 
+    program
+        .getCategoryMappings()
+        .forEach(categoryMapping -> handleProgramCategoryMapping(metadata, categoryMapping));
+
     List<ProgramRule> programRules = programRuleService.getProgramRule(program);
     List<ProgramRuleVariable> programRuleVariables =
         programRuleVariableService.getProgramRuleVariable(program);
@@ -956,6 +961,16 @@ public class DefaultMetadataExportService implements MetadataExportService {
 
     handleAttributes(metadata, programStageDataElement);
     handleDataElement(metadata, programStageDataElement.getDataElement());
+
+    return metadata;
+  }
+
+  private SetMap<Class<? extends IdentifiableObject>, IdentifiableObject>
+      handleProgramCategoryMapping(
+          SetMap<Class<? extends IdentifiableObject>, IdentifiableObject> metadata,
+          ProgramCategoryMapping categoryMapping) {
+    if (categoryMapping == null) return metadata;
+    metadata.putValue(ProgramCategoryMapping.class, categoryMapping);
 
     return metadata;
   }

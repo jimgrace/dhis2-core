@@ -129,7 +129,7 @@ public class ProgramIndicator extends BaseDataDimensionalItemObject implements M
   private CategoryCombo attributeCombo;
 
   /** Category mappings for both COC and AOC PI disaggregation */
-  private Set<ProgramIndicatorCategoryMapping> categoryMappings = new HashSet<>();
+  private Set<ProgramCategoryMapping> categoryMappings = new HashSet<>();
 
   // -------------------------------------------------------------------------
   // Constructors
@@ -462,12 +462,14 @@ public class ProgramIndicator extends BaseDataDimensionalItemObject implements M
   }
 
   @JsonProperty
-  @JacksonXmlProperty(namespace = DxfNamespaces.DXF_2_0)
-  public Set<ProgramIndicatorCategoryMapping> getCategoryMappings() {
+  @JsonSerialize(contentAs = BaseIdentifiableObject.class)
+  @JacksonXmlElementWrapper(localName = "categoryMappings", namespace = DxfNamespaces.DXF_2_0)
+  @JacksonXmlProperty(localName = "categoryMapping", namespace = DxfNamespaces.DXF_2_0)
+  public Set<ProgramCategoryMapping> getCategoryMappings() {
     return categoryMappings;
   }
 
-  public void setCategoryMappings(Set<ProgramIndicatorCategoryMapping> categoryMappings) {
+  public void setCategoryMappings(Set<ProgramCategoryMapping> categoryMappings) {
     this.categoryMappings = categoryMappings;
   }
 

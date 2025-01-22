@@ -232,7 +232,10 @@ public class HibernateDbmsManager implements DbmsManager {
     emptyTable("program_organisationunits");
     emptyTable("program_attributes");
     emptyTable("periodboundary");
+    emptyTable("programindicator_categorymappings");
     emptyTable("programindicator");
+    emptyTable("program_categoryoptionmapping");
+    emptyTable("program_categorymapping");
     emptyTable("programownershiphistory");
     emptyTable("programtempownershipaudit");
     emptyTable("programtempowner");

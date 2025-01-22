@@ -940,7 +940,7 @@ public class Program extends BaseNameableObject implements VersionedObject, Meta
   @JsonProperty("categoryMappings")
   @JsonSerialize(contentAs = BaseIdentifiableObject.class)
   @JacksonXmlElementWrapper(localName = "categoryMappings", namespace = DxfNamespaces.DXF_2_0)
-  @JacksonXmlProperty(localName = "categoryMappings", namespace = DxfNamespaces.DXF_2_0)
+  @JacksonXmlProperty(localName = "categoryMapping", namespace = DxfNamespaces.DXF_2_0)
   public Set<ProgramCategoryMapping> getCategoryMappings() {
     return categoryMappings;
   }

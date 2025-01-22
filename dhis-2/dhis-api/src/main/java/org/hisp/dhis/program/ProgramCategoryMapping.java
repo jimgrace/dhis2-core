@@ -63,6 +63,8 @@ public class ProgramCategoryMapping extends BaseIdentifiableObject implements Me
   /** The category option mappings for this program, category, and name */
   private Set<ProgramCategoryOptionMapping> optionMappings = new HashSet<>();
 
+  private Set<ProgramIndicator> programIndicators = new HashSet<>();
+
   // -------------------------------------------------------------------------
   // Getters and setters
   // -------------------------------------------------------------------------
@@ -108,5 +110,17 @@ public class ProgramCategoryMapping extends BaseIdentifiableObject implements Me
 
   public void setOptionMappings(Set<ProgramCategoryOptionMapping> optionMappings) {
     this.optionMappings = optionMappings;
+  }
+
+  @JsonProperty
+  @JsonSerialize(contentAs = BaseIdentifiableObject.class)
+  @JacksonXmlElementWrapper(localName = "programIndicators", namespace = DxfNamespaces.DXF_2_0)
+  @JacksonXmlProperty(localName = "programIndicator", namespace = DxfNamespaces.DXF_2_0)
+  public Set<ProgramIndicator> getProgramIndicators() {
+    return programIndicators;
+  }
+
+  public void setProgramIndicators(Set<ProgramIndicator> programIndicators) {
+    this.programIndicators = programIndicators;
   }
 }

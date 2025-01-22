@@ -27,40 +27,30 @@
  */
 package org.hisp.dhis.program;
 
-import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement;
-import java.io.Serializable;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
-import org.hisp.dhis.category.Category;
-import org.hisp.dhis.common.DxfNamespaces;
-import org.hisp.dhis.common.MetadataObject;
+import java.util.Map;
+import lombok.RequiredArgsConstructor;
+import org.hisp.dhis.category.CategoryOption;
+import org.hisp.dhis.system.deletion.DeletionVeto;
+import org.hisp.dhis.system.deletion.JdbcDeletionHandler;
+import org.springframework.stereotype.Component;
 
 /**
- * Specifies which {link @ProgramCategoryMapping} to be used for this {@ProgramIndicator} and
- * {@Category}.
- *
  * @author Jim Grace
  */
-@Getter
-@Setter
-@NoArgsConstructor
-@AllArgsConstructor
-@JacksonXmlRootElement(
-    localName = "programIndicatorCategoryMapping",
-    namespace = DxfNamespaces.DXF_2_0)
-public class ProgramIndicatorCategoryMapping implements MetadataObject, Serializable {
+@Component
+@RequiredArgsConstructor
+public class ProgramCategoryOptionMappingDeletionHandler extends JdbcDeletionHandler {
+  private final ProgramCategoryMappingService categoryMappingService;
 
-  /** The @{link ProgramIndicator} referencing this category mapping */
-  private ProgramIndicator programIndicator;
+  private static final DeletionVeto VETO = new DeletionVeto(ProgramCategoryOptionMapping.class);
 
-  /** The {@link Category} for this category mapping */
-  private Category category;
+  @Override
+  protected void register() {
+    whenVetoing(CategoryOption.class, this::allowDeleteCategoryOption);
+  }
 
-  /**
-   * The {@link ProgramCategoryMapping} to be used for this @{link ProgramIndicator} and {@link
-   * Category}
-   */
-  private ProgramCategoryMapping categoryMapping;
+  private DeletionVeto allowDeleteCategoryOption(CategoryOption option) {
+    String sql = "select 1 from program_categoryoptionmapping where categoryoptionid= :id limit 1";
+    return vetoIfExists(VETO, sql, Map.of("id", option.getId()));
+  }
 }

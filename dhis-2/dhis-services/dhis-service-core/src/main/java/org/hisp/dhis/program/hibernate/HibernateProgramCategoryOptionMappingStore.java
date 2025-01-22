@@ -25,12 +25,25 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package org.hisp.dhis.program;
+package org.hisp.dhis.program.hibernate;
 
-import org.hisp.dhis.common.IdentifiableObjectStore;
+import jakarta.persistence.EntityManager;
+import org.hisp.dhis.hibernate.HibernateGenericStore;
+import org.hisp.dhis.program.ProgramCategoryOptionMapping;
+import org.hisp.dhis.program.ProgramCategoryOptionMappingStore;
+import org.springframework.context.ApplicationEventPublisher;
+import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.stereotype.Repository;
 
 /**
  * @author Jim Grace
  */
-public interface ProgramCategoryMappingStore
-    extends IdentifiableObjectStore<ProgramCategoryMapping> {}
+@Repository("org.hisp.dhis.program.ProgramCategoryOptionMappingStore")
+public class HibernateProgramCategoryOptionMappingStore
+    extends HibernateGenericStore<ProgramCategoryOptionMapping>
+    implements ProgramCategoryOptionMappingStore {
+  public HibernateProgramCategoryOptionMappingStore(
+      EntityManager entityManager, JdbcTemplate jdbcTemplate, ApplicationEventPublisher publisher) {
+    super(entityManager, jdbcTemplate, publisher, ProgramCategoryOptionMapping.class, true);
+  }
+}

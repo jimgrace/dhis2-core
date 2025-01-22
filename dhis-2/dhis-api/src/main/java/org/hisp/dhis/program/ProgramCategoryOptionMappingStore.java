@@ -25,42 +25,12 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package org.hisp.dhis.dxf2.metadata.objectbundle.hooks;
+package org.hisp.dhis.program;
 
-import lombok.AllArgsConstructor;
-import org.hisp.dhis.category.CategoryOption;
-import org.hisp.dhis.category.CategoryService;
-import org.hisp.dhis.dxf2.metadata.objectbundle.ObjectBundle;
-import org.hisp.dhis.program.ProgramCategoryOptionMapping;
-import org.springframework.stereotype.Component;
+import org.hisp.dhis.common.GenericStore;
 
 /**
  * @author Jim Grace
  */
-@Component
-@AllArgsConstructor
-public class ProgramCategoryOptionMappingObjectBundleHook
-    extends AbstractObjectBundleHook<ProgramCategoryOptionMapping> {
-  private final CategoryService categoryService;
-
-  @Override
-  public void preCreate(ProgramCategoryOptionMapping object, ObjectBundle bundle) {
-    setCategoryOption(object);
-  }
-
-  @Override
-  public void preUpdate(
-      ProgramCategoryOptionMapping object,
-      ProgramCategoryOptionMapping persistedObject,
-      ObjectBundle bundle) {
-    setCategoryOption(object);
-  }
-
-  private void setCategoryOption(ProgramCategoryOptionMapping optionMapping) {
-    CategoryOption categoryOption =
-        categoryService.getCategoryOption(optionMapping.getCategoryOption().getUid());
-
-    optionMapping.setCategoryOption(categoryOption);
-    getSession().save(categoryOption);
-  }
-}
+public interface ProgramCategoryOptionMappingStore
+    extends GenericStore<ProgramCategoryOptionMapping> {}

@@ -27,11 +27,8 @@
  */
 package org.hisp.dhis.program.hibernate;
 
-import com.google.common.collect.Lists;
 import jakarta.persistence.EntityManager;
-import java.util.List;
 import org.hisp.dhis.common.hibernate.HibernateIdentifiableObjectStore;
-import org.hisp.dhis.program.Program;
 import org.hisp.dhis.program.ProgramCategoryMapping;
 import org.hisp.dhis.program.ProgramCategoryMappingStore;
 import org.hisp.dhis.security.acl.AclService;
@@ -52,20 +49,5 @@ public class HibernateProgramCategoryMappingStore
       ApplicationEventPublisher publisher,
       AclService aclService) {
     super(entityManager, jdbcTemplate, publisher, ProgramCategoryMapping.class, aclService, true);
-  }
-
-  // -------------------------------------------------------------------------
-  // Implemented methods
-  // -------------------------------------------------------------------------
-
-  @Override
-  public List<ProgramCategoryMapping> getByProgram(Program program) {
-    if (program == null) {
-      return Lists.newArrayList();
-    }
-
-    final String hql = "from ProgramCategoryMapping p where p.program = :program";
-
-    return getQuery(hql).setParameter("program", program).list();
   }
 }

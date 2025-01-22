@@ -71,9 +71,11 @@
     <many-to-one name="attributeCombo" class="org.hisp.dhis.category.CategoryCombo"
       column="attributecomboid" foreign-key="fk_programindicator_attributecomboid" not-null="true" />
 
-    <set name="categoryMappings" inverse="true">
-      <key column="programindicatorid"/>
-      <one-to-many class="org.hisp.dhis.program.ProgramIndicatorCategoryMapping"/>
+    <set name="categoryMappings" table="programindicator_categorymappings">
+      <cache usage="read-write" />
+      <key column="programindicatorid" foreign-key="fk_pi_categorymappings_programindicatorid" />
+      <many-to-many class="org.hisp.dhis.program.ProgramCategoryMapping" column="categorymappingid"
+                    foreign-key="fk_pi_categorymappings_categorymappingid" />
     </set>
 
     <property name="displayInForm" />

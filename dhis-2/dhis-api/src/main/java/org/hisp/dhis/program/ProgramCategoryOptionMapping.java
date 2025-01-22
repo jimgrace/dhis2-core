@@ -48,7 +48,7 @@ import org.hisp.dhis.common.EmbeddedObject;
 public class ProgramCategoryOptionMapping implements EmbeddedObject {
 
   /** The database internal identifier for this Object. */
-  private int id;
+  private long id;
 
   /** The program category mapping */
   private ProgramCategoryMapping categoryMapping;
@@ -64,11 +64,11 @@ public class ProgramCategoryOptionMapping implements EmbeddedObject {
   // -------------------------------------------------------------------------
 
   @JsonIgnore
-  public int getId() {
+  public long getId() {
     return id;
   }
 
-  public void setId(int id) {
+  public void setId(long id) {
     this.id = id;
   }
 

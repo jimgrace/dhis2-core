@@ -27,7 +27,6 @@
  */
 package org.hisp.dhis.program;
 
-import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -39,6 +38,7 @@ import org.springframework.transaction.annotation.Transactional;
 @Service("org.hisp.dhis.program.ProgramCategoryMappingService")
 public class DefaultProgramCategoryMappingService implements ProgramCategoryMappingService {
   private final ProgramCategoryMappingStore programCategoryMappingStore;
+  private final ProgramCategoryOptionMappingStore programCategoryOptionMappingStore;
 
   // -------------------------------------------------------------------------
   // ProgramCategoryMapping implementation
@@ -58,6 +58,12 @@ public class DefaultProgramCategoryMappingService implements ProgramCategoryMapp
   }
 
   @Override
+  @Transactional
+  public void deleteProgramCategoryOptionMapping(ProgramCategoryOptionMapping optionMapping) {
+    programCategoryOptionMappingStore.delete(optionMapping);
+  }
+
+  @Override
   @Transactional(readOnly = true)
   public ProgramCategoryMapping getProgramCategoryMapping(long id) {
     return programCategoryMappingStore.get(id);
@@ -73,11 +79,5 @@ public class DefaultProgramCategoryMappingService implements ProgramCategoryMapp
   @Transactional
   public void updateProgramCategoryMapping(ProgramCategoryMapping programCategoryMapping) {
     programCategoryMappingStore.update(programCategoryMapping);
-  }
-
-  @Override
-  @Transactional(readOnly = true)
-  public List<ProgramCategoryMapping> getProgramCategoryMappingsByProgram(Program program) {
-    return programCategoryMappingStore.getByProgram(program);
   }
 }
